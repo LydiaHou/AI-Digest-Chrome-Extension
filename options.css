@@ -1,0 +1,10 @@
+.opt-container{max-width:720px;margin:24px auto;padding:0 16px}
+h1{font-size:22px;margin-bottom:12px}
+.card{border:1px solid #e5e7eb;border-radius:8px;padding:16px;margin:12px 0;background:#fafafa}
+label{display:block;margin:10px 0}
+input,select{width:100%;padding:10px;border:1px solid #d1d5db;border-radius:6px;background:#fff}
+.actions{display:flex;align-items:center;gap:12px;margin-top:16px}
+button#saveBtn{background:#2563eb;color:#fff;border:none;border-radius:6px;padding:10px 16px;cursor:pointer}
+button#saveBtn:hover{background:#1d4ed8}
+.status{color:#059669}
+

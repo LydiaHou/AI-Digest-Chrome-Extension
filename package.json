@@ -1,0 +1,56 @@
+{
+  "name": "vibe-video-summarizer",
+  "version": "1.0.0",
+  "description": "A Chrome extension that automatically summarizes YouTube videos and podcast episodes using AI",
+  "main": "background.js",
+  "scripts": {
+    "build": "echo 'Chrome extension - no build step required'",
+    "dev": "echo 'Load extension in Chrome with Developer mode enabled'",
+    "test": "echo 'No tests configured yet'",
+    "lint": "echo 'No linter configured yet'"
+  },
+  "keywords": [
+    "chrome-extension",
+    "youtube",
+    "podcast",
+    "ai",
+    "summarizer",
+    "openai",
+    "whisper",
+    "chatgpt",
+    "audio-processing",
+    "speech-to-text"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/vibe-video-summarizer.git"
+  },
+  "bugs": {
+    "url": "https://github.com/yourusername/vibe-video-summarizer/issues"
+  },
+  "homepage": "https://github.com/yourusername/vibe-video-summarizer#readme",
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "devDependencies": {},
+  "dependencies": {},
+  "manifest": {
+    "version": 3,
+    "permissions": [
+      "activeTab",
+      "storage",
+      "tabs",
+      "scripting",
+      "webRequest"
+    ],
+    "host_permissions": [
+      "https://www.youtube.com/*",
+      "https://*.spotify.com/*",
+      "https://*.apple.com/*",
+      "https://*.googleapis.com/*",
+      "https://api.openai.com/*"
+    ]
+  }
+}
