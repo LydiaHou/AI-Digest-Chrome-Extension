@@ -1,19 +1,24 @@
-// Options page logic for Vibe
+// options.js — Options page logic for Vibe
 
-document.addEventListener('DOMContentLoaded', async () => {
+document.addEventListener('DOMContentLoaded', () => {
   const els = getEls();
-  const settings = await chrome.storage.sync.get([
-    'provider','openaiApiKey','anthropicApiKey','geminiApiKey','summaryMode','summaryLength','iterations'
-  ]);
-  els.provider.value = settings.provider || 'openai';
-  els.openaiKey.value = settings.openaiApiKey || '';
-  els.anthropicKey.value = settings.anthropicApiKey || '';
-  els.geminiKey.value = settings.geminiApiKey || '';
-  els.summaryMode.value = settings.summaryMode || 'executive';
-  els.summaryLength.value = settings.summaryLength || 'medium';
-  els.iterations.value = settings.iterations != null ? settings.iterations : 1;
 
-  els.saveBtn.addEventListener('click', async () => {
+  // Load saved settings
+  chrome.storage.sync.get([
+    'provider', 'openaiApiKey', 'anthropicApiKey', 'geminiApiKey',
+    'summaryMode', 'summaryLength', 'iterations'
+  ], (settings) => {
+    els.provider.value = settings.provider || 'openai';
+    els.openaiKey.value = settings.openaiApiKey || '';
+    els.anthropicKey.value = settings.anthropicApiKey || '';
+    els.geminiKey.value = settings.geminiApiKey || '';
+    els.summaryMode.value = settings.summaryMode || 'executive';
+    els.summaryLength.value = settings.summaryLength || 'medium';
+    els.iterations.value = settings.iterations != null ? settings.iterations : 1;
+  });
+
+  // Save button
+  els.saveBtn.addEventListener('click', () => {
     const payload = {
       provider: els.provider.value,
       openaiApiKey: els.openaiKey.value.trim(),
@@ -21,15 +26,27 @@ document.addEventListener('DOMContentLoaded', async () => {
       geminiApiKey: els.geminiKey.value.trim(),
       summaryMode: els.summaryMode.value,
       summaryLength: els.summaryLength.value,
-      iterations: Math.max(0, Math.min(3, parseInt(els.iterations.value || '1', 10)))
+      iterations: Math.max(0, Math.min(3, parseInt(els.iterations.value, 10) || 1))
     };
-    await chrome.storage.sync.set(payload);
-    els.status.textContent = 'Saved';
-    setTimeout(() => els.status.textContent = '', 1500);
+
+    // Send to background safely
+    chrome.runtime.sendMessage(
+      { action: 'updateSettings', settings: payload },
+      (resp) => {
+        if (resp?.ok) {
+          els.status.textContent = 'Saved';
+          setTimeout(() => (els.status.textContent = ''), 1500);
+        } else {
+          console.error('Failed to save settings:', resp?.error);
+          els.status.textContent = 'Error saving';
+          setTimeout(() => (els.status.textContent = ''), 1500);
+        }
+      }
+    );
   });
 });
 
-function getEls(){
+function getEls() {
   return {
     provider: document.getElementById('provider'),
     openaiKey: document.getElementById('openaiKey'),
@@ -42,5 +59,3 @@ function getEls(){
     status: document.getElementById('status')
   };
 }
-
-
